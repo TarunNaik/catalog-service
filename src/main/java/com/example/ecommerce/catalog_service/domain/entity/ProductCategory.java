@@ -5,12 +5,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 public class ProductCategory {
-    private Long id;
+    private UUID id;
     private String name;
     private String description;
     private String status = "ACTIVE";
