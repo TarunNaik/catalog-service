@@ -16,10 +16,11 @@ import java.util.List;
 public class MasterDataController {
 
     private final FetchProductCategoriesPort fetchProductCategoriesPort;
-    private final CategoryMapper categoryMapper = CategoryMapper.INSTANCE;
+    private final CategoryMapper categoryMapper;
 
-    public MasterDataController(FetchProductCategoriesPort fetchProductCategoriesPort) {
+    public MasterDataController(FetchProductCategoriesPort fetchProductCategoriesPort, CategoryMapper categoryMapper) {
         this.fetchProductCategoriesPort = fetchProductCategoriesPort;
+        this.categoryMapper = categoryMapper;
     }
 
     //Add Category, Brand, etc. endpoints here
