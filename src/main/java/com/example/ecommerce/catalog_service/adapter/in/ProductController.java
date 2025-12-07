@@ -1,6 +1,8 @@
 package com.example.ecommerce.catalog_service.adapter.in;
 
 import com.example.ecommerce.catalog_service.adapter.in.dto.ProductDto;
+import com.example.ecommerce.catalog_service.adapter.in.mapper.ProductMapper;
+import com.example.ecommerce.catalog_service.domain.entity.Product;
 import com.example.ecommerce.catalog_service.domain.port.in.SaveProductPort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +14,7 @@ import java.util.List;
 @RequestMapping("/api/v1/product")
 public class ProductController {
     private final SaveProductPort saveProductPort;
+    private final ProductMapper productMapper = ProductMapper.INSTANCE;
 
     public ProductController(SaveProductPort saveProductPort) {
         this.saveProductPort = saveProductPort;
@@ -19,9 +22,9 @@ public class ProductController {
 
     @PostMapping
     public ResponseEntity<ProductDto>addProduct(@RequestHeader("Authorization") String token, @RequestBody ProductDto productDto) {
-         createdProduct = saveProductPort.saveProduct(productDto);
+        Product  createdProduct = saveProductPort.saveProduct(productDto);
 
-        return ResponseEntity.ok(productDto);
+        return ResponseEntity.ok(productMapper.toDto(createdProduct));
     }
 
     @DeleteMapping("/{id}")
