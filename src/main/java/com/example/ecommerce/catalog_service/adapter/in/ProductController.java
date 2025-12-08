@@ -20,7 +20,7 @@ public class ProductController {
         this.saveProductPort = saveProductPort;
     }
 
-    @PostMapping
+    @PostMapping("/add")
     public ResponseEntity<ProductDto>addProduct(@RequestHeader("Authorization") String token, @RequestBody ProductDto productDto) {
         Product  createdProduct = saveProductPort.saveProduct(productDto);
 
@@ -37,7 +37,7 @@ public class ProductController {
         return ResponseEntity.ok(new ProductDto());
     }
 
-    @GetMapping
+    @GetMapping("/list")
     public ResponseEntity<List<ProductDto>> listProducts(@RequestHeader("Authorization") String token) {
         return ResponseEntity.ok(Collections.emptyList());
     }

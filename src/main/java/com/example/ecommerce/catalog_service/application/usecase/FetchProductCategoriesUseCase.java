@@ -17,7 +17,8 @@ public class FetchProductCategoriesUseCase implements FetchProductCategoriesPort
     }
 
     @Override
-    public List<ProductCategory> fetchAllCategories() {
+    public List<ProductCategory> fetchAllCategories(String authToken) {
+        //Check if authToken is valid (implementation omitted for brevity)
         // Implementation logic to fetch all product categories
         return productCategoryRepositoryPort.findAllCategories();
     }

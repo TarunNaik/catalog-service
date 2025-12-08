@@ -13,7 +13,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "product_categories")
+@Table(name = "categories")
 public class ProductCategoryEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -5,5 +5,5 @@ import com.example.ecommerce.catalog_service.domain.entity.ProductCategory;
 import java.util.List;
 
 public interface FetchProductCategoriesPort {
-   List<ProductCategory> fetchAllCategories();
+   List<ProductCategory> fetchAllCategories(String authToken);
 }
