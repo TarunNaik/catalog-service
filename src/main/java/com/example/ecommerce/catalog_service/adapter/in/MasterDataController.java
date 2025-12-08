@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 
@@ -26,10 +27,13 @@ public class MasterDataController {
 
     //Add Category, Brand, etc. endpoints here
     @GetMapping("/categories")
-    public ResponseEntity<List<CategoryDto>> getAllCategories(@RequestHeader("Authorization") String token) {
-        List<ProductCategory> categories = fetchProductCategoriesPort.fetchAllCategories(token);
-        return ResponseEntity.ok(categories.stream()
-                .map(categoryMapper::toDto)
-                .toList());
+    public ResponseEntity<Mono<List<CategoryDto>>> getAllCategories(@RequestHeader("Authorization") String token) throws Exception {
+        Mono<List<ProductCategory>> prodCategories = fetchProductCategoriesPort.fetchAllCategories(token);
+        Mono<List<CategoryDto>> categoryDtos =
+        prodCategories.map(categories ->
+                categories.stream()
+                        .map(categoryMapper::toDto)
+                        .toList());
+        return ResponseEntity.ok(categoryDtos);
     }
 }
