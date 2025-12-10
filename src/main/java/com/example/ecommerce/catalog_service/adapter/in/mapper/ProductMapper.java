@@ -19,16 +19,17 @@ public interface ProductMapper {
     // --- Domain → DTO ---
     @Mapping(source = "id", target = "id")
     @Mapping(source = "price.amount", target = "price")
-    @Mapping(source = "imgUrl", target = "imageUrl")
-    @Mapping(source = "stock.quantity", target = "stockQuantity")
+    @Mapping(source = "price.currency", target = "currency") // handled by custom method
+    @Mapping(source = "imgUrl", target = "imgUrl")
+    @Mapping(source = "stock.quantity", target = "stock")
     @Mapping(source = "category", target = "category") // handled by custom method
     ProductDto toDto(Product product);
 
     // --- DTO → Domain ---
-    @Mapping(source = "id", target = "id")
-    @Mapping(source = "price", target = "price")       // handled by custom method
-    @Mapping(source = "imageUrl", target = "imgUrl")
-    @Mapping(source = "stockQuantity", target = "stock") // handled by custom method
+    @Mapping(source = "price", target = "price.amount")
+    @Mapping(source = "currency", target = "price.currency")// handled by custom method
+    @Mapping(source = "imgUrl", target = "imgUrl")
+    @Mapping(source = "stock", target = "stock.quantity") // handled by custom method
     @Mapping(source = "category", target = "category")   // handled by custom method
     Product toDomain(ProductDto dto);
 
@@ -36,23 +37,27 @@ public interface ProductMapper {
 
     // ProductCategory ↔ String
     default String map(ProductCategory category) {
-        return category == null ? null : category.getId().toString();
+        return category == null ? null : category.getName();
     }
 
-    default ProductCategory map(String categoryId) {
-        if (categoryId == null) return null;
-        return new ProductCategory(UUID.fromString(categoryId), null, null, "ACTIVE");
-        // You can enrich name/description/status later by fetching from master data
+    default ProductCategory map(String categoryName) {
+        if (categoryName == null) return null;
+        return new ProductCategory(null, categoryName, null, "ACTIVE");
     }
+
 
     // Money ↔ BigDecimal
     default BigDecimal map(Money money) {
         return money == null ? null : money.amount();
     }
 
-    default Money map(BigDecimal amount) {
-        return amount == null ? null : new Money(amount, Currency.getInstance("INR"));
+    default Money map(BigDecimal price, String currencyCode) {
+        if (price == null || currencyCode == null) {
+            return null;
+        }
+        return new Money(price, Currency.getInstance(currencyCode));
     }
+
 
     // Stock ↔ int
     default int map(Stock stock) {

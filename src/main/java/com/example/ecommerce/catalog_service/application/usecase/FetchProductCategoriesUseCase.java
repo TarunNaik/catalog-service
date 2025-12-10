@@ -5,8 +5,7 @@ import com.example.ecommerce.catalog_service.domain.port.in.FetchProductCategori
 import com.example.ecommerce.catalog_service.domain.port.out.AuthValidationPort;
 import com.example.ecommerce.catalog_service.domain.port.out.ProductCategoryRepositoryPort;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
+
 
 import java.util.List;
 
@@ -22,16 +21,7 @@ public class FetchProductCategoriesUseCase implements FetchProductCategoriesPort
     }
 
     @Override
-    public Mono<List<ProductCategory>> fetchAllCategories(String authToken) throws Exception {
-        return authValidationPort.validateToken(authToken, "VENDOR")
-                .flatMap(valid -> {
-                    if (!valid) {
-                        return Mono.error(new Exception("Unauthorized access"));
-                    }
-                    // Wrap synchronous repo call in boundedElastic if it's blocking
-                    return Mono.fromCallable(productCategoryRepositoryPort::findAllCategories)
-                            .subscribeOn(Schedulers.boundedElastic());
-                });
-
+    public List<ProductCategory> fetchAllCategories(String authToken) throws Exception {
+        return productCategoryRepositoryPort.findAllCategories();
     }
 }
