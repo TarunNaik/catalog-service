@@ -13,6 +13,7 @@ import com.example.ecommerce.catalog_service.infrastructure.persistence.entity.P
 import com.example.ecommerce.catalog_service.infrastructure.persistence.mapper.ProductEntityMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -34,8 +35,8 @@ public class SaveProductUseCase implements SaveProductPort {
     @Override
     public Product saveProduct(ProductDto productDto, String jwtToken) {
         //Check if the user is authorized to save a product
-        Boolean valid = authValidationPort.validateToken(jwtToken, "VENDOR");
-        if (!valid) {
+        Optional<UUID> vendorId = authValidationPort.getUserIdFromToken(jwtToken, "VENDOR");
+        if (vendorId.isEmpty()) {
             throw new UnauthorizedAccessException("User is not authorized to perform this action");
         }
         Product product = productMapper.toDomain(productDto);
@@ -44,6 +45,7 @@ public class SaveProductUseCase implements SaveProductPort {
                 .orElseThrow(() -> new IllegalArgumentException("Category not found"));
 
         product.setCategory(category);
+        product.setVendorId(vendorId.get());
         return productRepositoryPort.save(product);
     }
 }

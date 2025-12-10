@@ -1,5 +1,6 @@
 package com.example.ecommerce.catalog_service.application.usecase;
 
+import com.example.ecommerce.catalog_service.application.exception.UnauthorizedAccessException;
 import com.example.ecommerce.catalog_service.domain.entity.Product;
 import com.example.ecommerce.catalog_service.domain.port.in.ListProductsPort;
 import com.example.ecommerce.catalog_service.domain.port.out.AuthValidationPort;
@@ -7,6 +8,8 @@ import com.example.ecommerce.catalog_service.domain.port.out.ProductRepositoryPo
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class ListProductsUseCase implements ListProductsPort {
@@ -22,7 +25,10 @@ public class ListProductsUseCase implements ListProductsPort {
     @Override
     public List<Product> listAllProducts(String jwtToken) {
         //Check if the user is authorized to save a product
-        Boolean valid = authValidationPort.validateToken(jwtToken, "VENDOR");
-        return productRepositoryPort.fetchAllProducts();
+        Optional<UUID> vendorId = authValidationPort.getUserIdFromToken(jwtToken, "VENDOR");
+        if ( vendorId.isEmpty()) {
+            throw new UnauthorizedAccessException("Unauthorized: Invalid token or insufficient permissions.");
+        }
+        return productRepositoryPort.fetchAllProducts(vendorId.get());
     }
 }

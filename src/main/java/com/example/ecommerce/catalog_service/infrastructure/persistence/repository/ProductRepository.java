@@ -4,7 +4,9 @@ import com.example.ecommerce.catalog_service.infrastructure.persistence.entity.P
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.UUID;
 @Repository
 public interface ProductRepository extends JpaRepository<ProductEntity, UUID> {
+    List<ProductEntity> findByVendorId(UUID vendorId);
 }

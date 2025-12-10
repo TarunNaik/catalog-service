@@ -4,6 +4,8 @@ import com.example.ecommerce.catalog_service.adapter.out.dto.UserAuthorizeReques
 import com.example.ecommerce.catalog_service.domain.port.out.AuthValidationPort;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+import java.util.UUID;
 
 
 @Component
@@ -17,5 +19,10 @@ public class AuthValidationAdapter implements AuthValidationPort {
     public Boolean validateToken(String token, String requiredRole) {
         UserAuthorizeRequest request = new UserAuthorizeRequest(token, requiredRole);
        return authFeignClient.validateToken(request);
+    }
+
+    @Override
+    public Optional<UUID> getUserIdFromToken(String token, String requiredRole) {
+        return authFeignClient.getUserIdFromToken(token, requiredRole);
     }
 }

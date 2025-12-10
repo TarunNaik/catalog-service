@@ -9,6 +9,6 @@ import java.util.UUID;
 public interface ProductRepositoryPort {
     Product save(Product product);
     Optional<Product> findById(UUID id);
-    List<Product> fetchAllProducts();
+    List<Product> fetchAllProducts(UUID vendorId);
 
 }

@@ -21,6 +21,7 @@ public interface ProductEntityMapper {
     @Mapping(source = "stock.quantity", target = "stockQuantity")
     @Mapping(source = "imgUrl", target = "imageUrl")
     @Mapping(source = "category", target = "category") // handled by ProductCategoryEntityMapper
+    @Mapping(source = "vendorId", target = "vendorId")
     ProductEntity toEntity(Product product);
 
     // --- Entity → Domain ---
@@ -31,6 +32,7 @@ public interface ProductEntityMapper {
     @Mapping(source = "stockQuantity", target = "stock.quantity")
     @Mapping(source = "imageUrl", target = "imgUrl")
     @Mapping(source = "category", target = "category") // handled by ProductCategoryEntityMapper
+    @Mapping(source = "vendorId", target = "vendorId")
     Product toDomain(ProductEntity entity);
 
     // --- Money ↔ BigDecimal + Currency ---

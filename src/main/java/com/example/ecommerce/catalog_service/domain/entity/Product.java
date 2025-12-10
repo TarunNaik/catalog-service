@@ -25,6 +25,7 @@ public class Product {
     private Stock stock;
     private String imgUrl;
     private ProductCategory category;
+    private UUID vendorId;
 
     // Business operations
     public void changePrice(Money newPrice) {

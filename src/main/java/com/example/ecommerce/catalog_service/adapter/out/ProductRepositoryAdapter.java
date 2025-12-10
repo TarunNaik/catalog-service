@@ -35,8 +35,8 @@ public class ProductRepositoryAdapter implements ProductRepositoryPort {
     }
 
     @Override
-    public List<Product> fetchAllProducts() {
-        return productRepository.findAll()
+    public List<Product> fetchAllProducts(UUID vendorId) {
+        return productRepository.findByVendorId(vendorId)
                 .stream()
                 .map(productEntityMapper::toDomain)
                 .toList();
