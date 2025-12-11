@@ -17,8 +17,7 @@ public class AuthValidationAdapter implements AuthValidationPort {
 
     @Override
     public Boolean validateToken(String token, String requiredRole) {
-        UserAuthorizeRequest request = new UserAuthorizeRequest(token, requiredRole);
-       return authFeignClient.validateToken(request);
+        return authFeignClient.validateToken(token, requiredRole);
     }
 
     @Override

@@ -41,4 +41,9 @@ public class ProductRepositoryAdapter implements ProductRepositoryPort {
                 .map(productEntityMapper::toDomain)
                 .toList();
     }
+
+    @Override
+    public void deleteProductById(UUID id) {
+        productRepository.deleteById(id);
+    }
 }

@@ -9,8 +9,9 @@ import java.util.UUID;
 
 @FeignClient(name = "auth-service", url = "${auth.service.url}")
 public interface AuthFeignClient {
-    @PostMapping("/validate-token")
-    Boolean validateToken(@RequestBody UserAuthorizeRequest request);
+    @GetMapping("/validate-token")
+    Boolean validateToken( @RequestHeader("Authorization") String token,
+                           @RequestParam("role") String role);
 
     @GetMapping("/get-user-id")
     Optional<UUID> getUserIdFromToken(
